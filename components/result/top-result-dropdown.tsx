@@ -36,11 +36,11 @@ export default function TopResultDropdown({
                   <p className="uppercase text-sm text-blue-600 font-semibold">
                     Rekomendasi Teratas
                   </p>
-                  <h3 className="text-lg font-bold tracking-tight">
-                    KELURAHAN {topResult.kelurahan}
+                  <h3 className="text-lg font-bold tracking-tight uppercase">
+                    Kelurahan {topResult.kelurahan}
                   </h3>
-                  <p className="text-muted-foreground font-semibold">
-                    KECAMATAN {topResult.kecamatan}
+                  <p className="text-muted-foreground font-semibold uppercase">
+                    Kecamatan {topResult.kecamatan}
                   </p>
                 </div>
               </div>

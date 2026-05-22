@@ -354,6 +354,12 @@ const rawKelurahanData: RawKelurahanData[] = [
 export const kelurahanData: ProcessedKelurahanData[] = rawKelurahanData.map(
   ({ otomotif, pendidikan, teknologi, ...item }) => ({
     ...item,
+    kelurahan: item.kelurahan
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase()),
+    kecamatan: item.kecamatan
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase()),
     totalUsaha: item.totalUsaha - (otomotif + pendidikan + teknologi)
   })
 );
@@ -375,8 +381,8 @@ export const skalaUsahaOptions = [
 ] as const;
 
 export const kecamatanOptions = [
-  { value: "ARGOMULYO", label: "Argomulyo" },
-  { value: "SIDOMUKTI", label: "Sidomukti" },
-  { value: "SIDOREJO", label: "Sidorejo" },
-  { value: "TINGKIR", label: "Tingkir" }
+  { value: "Argomulyo", label: "Argomulyo" },
+  { value: "Sidomukti", label: "Sidomukti" },
+  { value: "Sidorejo", label: "Sidorejo" },
+  { value: "Tingkir", label: "Tingkir" }
 ] as const;
