@@ -52,6 +52,8 @@ export default function ProfileForm() {
     }
   });
 
+  const descriptionMaxLength = 256;
+
   const onSubmit: SubmitHandler<FormInput> = (data) => {
     const clusterResult = runMultipleKMeans(3);
     const topsisRecommendation = getTopsisRecommendationByCluster(
@@ -60,21 +62,20 @@ export default function ProfileForm() {
       COMPUTED_AHP_RESULT.weights
     );
 
-    localStorage.setItem(
-      "dss-result",
-      JSON.stringify({
-        profile: {
-          namaUsaha: data.namaUsaha,
-          sektor: data.sektor,
-          skala: data.skala,
-          kecamatan: data.kecamatan,
-          deskripsiProduk: data.deskripsiProduk
-        },
-        clusterResult,
-        topsisRecommendation,
-        ahpResult: COMPUTED_AHP_RESULT
-      })
-    );
+    const payload = {
+      profile: { ...data },
+      clusterResult,
+      topsisRecommendation,
+      ahpResult: COMPUTED_AHP_RESULT
+    };
+
+    localStorage.setItem("dss-result", JSON.stringify(payload));
+
+    fetch("/api/recommendations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload.profile)
+    }).catch(console.error);
 
     router.push("/dashboard/result");
   };
@@ -238,7 +239,14 @@ export default function ProfileForm() {
         render={({ field }) => (
           <div className="space-y-1">
             <Label>Deskripsi Produk</Label>
-            <Textarea className="rounded-md" {...field} />
+            <span className="text-xs text-muted-foreground">
+              {field.value?.length || 0}/{descriptionMaxLength}
+            </span>
+            <Textarea
+              maxLength={descriptionMaxLength}
+              className="rounded-md"
+              {...field}
+            />
           </div>
         )}
       />
