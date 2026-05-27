@@ -1,5 +1,6 @@
 import { AHPCriteria, AHPResult } from "@/playgrounds/ahp.playground";
 import { mean } from "simple-statistics";
+import { AHP_CR_THRESHOLD } from "./constants";
 
 /**
  * Pairwise comparison matrix
@@ -132,7 +133,7 @@ export function calculateAhpWeights(comparisonMatrix: number[][]): AHPResult {
     consistencyRatio,
     consistencyIndex,
     lambdaMax,
-    consistent: consistencyRatio < 0.1, // Boolean: True jika CR < 10%
+    consistent: consistencyRatio < AHP_CR_THRESHOLD, // Boolean: True jika CR < 10%
     normalizedMatrix: normalized
   };
 }

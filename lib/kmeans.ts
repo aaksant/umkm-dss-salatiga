@@ -10,6 +10,12 @@ import {
   ScoredCluster
 } from "@/data/types/kmeans.types";
 import { mean, shuffle, standardDeviation } from "simple-statistics";
+import {
+  KMEANS_DEFAULT_RUNS,
+  KMEANS_K_MAX,
+  KMEANS_K_MIN,
+  KMEANS_MAX_ITERATION
+} from "./constants";
 
 /**
  * Fitur apa saja yang dilihat K-Means untuk menilai kemiripan antar kelurahan
@@ -295,12 +301,12 @@ function runSingleKMeans(
   data: ProcessedKelurahanPct[],
   K: number,
   features: Feature[],
-  maxIteration = 100
+  maxIteration = KMEANS_MAX_ITERATION
 ) {
   const normalizedFeatures = features.map((feature) => `${feature}_std`);
   // Membuat array index [0, 1, 2, ...] dan mengacak urutannya sebagai index centroid
   const randomCentroidIndices = shuffle(Array.from(data.keys()));
-  let centroids = randomCentroidIndices
+  const centroids = randomCentroidIndices
     // Slice karena hanya membutuhkan titik awal (centroid) sebanyak jumlah kelompok (K)
     // yang ingin kita buat, bukan sebanyak jumlah seluruh kelurahan
     .slice(0, K)
@@ -356,7 +362,10 @@ function runSingleKMeans(
 }
 
 // Run K-Means multiple times and pick best silhouette
-export function runMultipleKMeans(K: number, runs = 50): ClusterResult {
+export function runMultipleKMeans(
+  K: number,
+  runs = KMEANS_DEFAULT_RUNS
+): ClusterResult {
   const processed = convertRawToPct(kelurahanData);
   const { normalized } = zScore(processed, features);
 
@@ -385,7 +394,7 @@ export function calculateElbowData(): {
   silhouette: number;
 }[] {
   const results: { k: number; wcss: number; silhouette: number }[] = [];
-  for (let k = 2; k <= 6; k++) {
+  for (let k = KMEANS_K_MIN; k <= KMEANS_K_MAX; k++) {
     const r = runMultipleKMeans(k, 8);
     results.push({ k, wcss: r.wcss, silhouette: r.silhouette });
   }
