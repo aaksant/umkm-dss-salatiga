@@ -52,12 +52,10 @@ export default function ProfileForm() {
     }
   });
 
-  const descriptionMaxLength = 256;
-
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
+  const onSubmit: SubmitHandler<FormInput> = async (data) => {
     const clusterResult = runMultipleKMeans(3);
     const topsisRecommendation = getTopsisRecommendationByCluster(
-      data.sektor as Sektor, // sementara ini paksa karena tidak mungkin ada string kosong, nanti dicek
+      data.sektor as Sektor,
       clusterResult,
       COMPUTED_AHP_RESULT.weights
     );
@@ -71,11 +69,31 @@ export default function ProfileForm() {
 
     localStorage.setItem("dss-result", JSON.stringify(payload));
 
-    fetch("/api/recommendations", {
+    const response = await fetch("/api/recommendations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload.profile)
-    }).catch(console.error);
+      body: JSON.stringify({
+        ...payload.profile,
+        k: clusterResult.k,
+        silhouette: clusterResult.silhouette,
+        targetCluster: topsisRecommendation.targetCluster,
+        topKelurahan: topsisRecommendation.detail.results
+          .slice(0, 3)
+          .map((r) => ({
+            rank: r.rank,
+            kelurahan: r.kelurahan,
+            kecamatan: r.kecamatan,
+            score: r.score
+          })),
+        consistencyRatio: COMPUTED_AHP_RESULT.consistencyRatio,
+        weights: COMPUTED_AHP_RESULT.weights
+      })
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.json();
+      console.error("Gagal menyimpan rekomendasi:", errorMessage);
+    }
 
     router.push("/dashboard/result");
   };
@@ -239,14 +257,7 @@ export default function ProfileForm() {
         render={({ field }) => (
           <div className="space-y-1">
             <Label>Deskripsi Produk</Label>
-            <span className="text-xs text-muted-foreground">
-              {field.value?.length || 0}/{descriptionMaxLength}
-            </span>
-            <Textarea
-              maxLength={descriptionMaxLength}
-              className="rounded-md"
-              {...field}
-            />
+            <Textarea className="rounded-md" {...field} />
           </div>
         )}
       />
