@@ -39,8 +39,6 @@ export function topsis(
   criterias: AHPCriteria[],
   weights: Record<string, number>
 ): TopsisDetail {
-  const n = alternatives.length;
-  const m = criterias.length;
   /*
    * Pembuatan decision matrix
    * Dari alternatives yang bentuknya array isi object, diubah jadi seperti ini:
@@ -182,16 +180,6 @@ export function getTopsisRecommendationByCluster(
     }
     clusterGroups[cluster].push(clusterResult.processedData[i]);
   });
-  // Score each cluster by avg sector density
-  // const clusterScores = Object.entries(clusterGroups).map(
-  //   ([cluster, points]) => ({
-  //     cluster: parseInt(cluster),
-  //     avgSector:
-  //       points.reduce((s, p) => s + ((p[sectorKey] as number) || 0), 0) /
-  //       points.length,
-  //     points
-  //   })
-  // );
 
   // Score each cluster menggunakan perbandingan terhadap kompetisi
   const clusterScores = Object.entries(clusterGroups).map(
