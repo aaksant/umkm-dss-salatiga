@@ -7,19 +7,16 @@ import {
 import KMeansClusterSlider from "@/components/dashboard/statistics/kmeans-cluster-slider";
 import { calculateElbowData, runMultipleKMeans } from "@/lib/kmeans";
 import { Loader2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 
 export default function StatisticPage() {
   // Jumlah cluster
   const [K, setK] = useState(3);
-  const [isComputing, setIsComputing] = useState(false);
+  const [clusteringResult, setClusteringResult] = useState(() =>
+    runMultipleKMeans(3)
+  );
+  const [isKPending, startTransition] = useTransition();
 
-  const clusteringResult = useMemo(() => {
-    setIsComputing(true);
-    const result = runMultipleKMeans(K);
-    setIsComputing(false);
-    return result;
-  }, [K]);
   const elbowData = useMemo(() => calculateElbowData(), []);
   const tableData = clusteringResult.processedData
     .map((data, i) => ({
@@ -31,6 +28,13 @@ export default function StatisticPage() {
       cluster: clusteringResult.dataPointAssignments[i]
     }))
     .sort((a, b) => b.cluster - a.cluster || b.totalUsaha - a.totalUsaha);
+
+  const handleKChange = (newK: number) => {
+    setK(newK);
+    startTransition(() => {
+      setClusteringResult(runMultipleKMeans(newK));
+    });
+  };
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
@@ -47,11 +51,11 @@ export default function StatisticPage() {
           <KMeansClusterSlider
             K={K}
             silhouette={clusteringResult.silhouette}
-            onKChange={(newK) => setK(newK)}
+            onKChange={handleKChange}
           />
         </div>
 
-        {isComputing && (
+        {isKPending && (
           <div className="flex items-center justify-center">
             <Loader2 className="w-6 h-6 animate-spin text-primary" />
           </div>
