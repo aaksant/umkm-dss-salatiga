@@ -8,8 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DSSResult } from "@/data/types/dss.types";
 import { ArrowUpRight, TriangleAlert } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 function NoInputInfo() {
   return (
@@ -42,18 +43,25 @@ export default function ResultPage() {
   const [isAhpDetailOpen, setIsAhpDetailOpen] = useState(false);
   const [isTopsisDetailOpen, setIsTopsisDetailOpen] = useState(false);
 
-  // Ambil data localStorage
-  useEffect(() => {
+  const loadDssResult = useEffectEvent(() => {
     const stored = localStorage.getItem("dss-result");
     if (stored) {
       setDssResult(JSON.parse(stored));
     }
+  });
+
+  // Ambil data localStorage
+  useEffect(() => {
+    loadDssResult();
   }, []);
 
   // Kalau dari localStorage null tampilkan fallback
   if (!dssResult) return <NoInputInfo />;
 
   const topResult = dssResult.topsisRecommendation.detail.results[0];
+  const MapView = dynamic(() => import("@/components/result/map-view"), {
+    ssr: false
+  });
 
   return (
     <div className="p-4">
@@ -83,6 +91,8 @@ export default function ResultPage() {
           isTopResultOpen={isTopResultOpen}
           onOpenChange={() => setIsTopResultOpen(!isTopResultOpen)}
         />
+        {/* Leaflet map */}
+        <MapView dssResult={dssResult} />
         {/* Full ranking TOPSIS */}
         <RecommendationTable dssResult={dssResult} />
         {/* Detail kriteria AHP */}
