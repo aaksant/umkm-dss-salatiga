@@ -1,0 +1,102 @@
+{
+  "id": "46b057ba-d6a9-420d-815c-f47928b20d58",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.recommendations": {
+      "name": "recommendations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "nama_usaha": {
+          "name": "nama_usaha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skala": {
+          "name": "skala",
+          "type": "skalaEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sektor": {
+          "name": "sektor",
+          "type": "sektorEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kecamatan": {
+          "name": "kecamatan",
+          "type": "kecamatanEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deskripsi_produk": {
+          "name": "deskripsi_produk",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.kecamatanEnum": {
+      "name": "kecamatanEnum",
+      "schema": "public",
+      "values": [
+        "Argomulyo",
+        "Sidomukti",
+        "Sidorejo",
+        "Tingkir"
+      ]
+    },
+    "public.sektorEnum": {
+      "name": "sektorEnum",
+      "schema": "public",
+      "values": [
+        "kuliner",
+        "fashion",
+        "perdagangan",
+        "agrobisnis"
+      ]
+    },
+    "public.skalaEnum": {
+      "name": "skalaEnum",
+      "schema": "public",
+      "values": [
+        "mikro",
+        "kecil",
+        "menengah"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1779524664388,
+      "tag": "0000_flat_paibok",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779807360940,
+      "tag": "0001_deep_skin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779813132529,
+      "tag": "0002_adorable_zodiak",
+      "breakpoints": true
+    }
+  ]
+}
