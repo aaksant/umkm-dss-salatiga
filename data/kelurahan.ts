@@ -3,7 +3,7 @@ import {
   RawKelurahanData
 } from "./types/kelurahan.types";
 
-const rawKelurahanData: RawKelurahanData[] = [
+export const rawKelurahanData: RawKelurahanData[] = [
   {
     kelurahan: "CEBONGAN",
     kecamatan: "ARGOMULYO",
@@ -350,6 +350,32 @@ const rawKelurahanData: RawKelurahanData[] = [
     pasar: 0
   }
 ];
+
+export const gadmToKelurahan: Record<string, string> = {
+  Cebongan: "CEBONGAN",
+  Kumpulrejo: "KUMPULREJO",
+  Ledok: "LEDOK",
+  Noborejo: "NOBOREJO",
+  Randuacir: "RANDUACIR",
+  Tegalrejo: "TEGALREJO",
+  Dukuh: "DUKUH",
+  Kalicacing: "KALICACING",
+  Kecandran: "KECANDRAN",
+  Mangunsari: "MANGUNSARI",
+  Blotongan: "BLOTONGAN",
+  Bugel: "BUGEL",
+  KaumanKidul: "KAUMAN KIDUL",
+  Pulutan: "PULUTAN",
+  Salatiga: "SALATIGA",
+  SidorejoLor: "SIDOREJO LOR",
+  Gendongan: "GENDONGAN",
+  Kalibening: "KALIBENING",
+  KutowinangunLor: "KUTOWINANGUN LOR",
+  KutowinangunKidul: "KUTOWINANGUN KIDUL",
+  SidorejoKidul: "SIDOREJO KIDUL",
+  TingkirLor: "TINGKIR LOR",
+  TingkirTengah: "TINGKIR TENGAH"
+};
 
 export const kelurahanData: ProcessedKelurahanData[] = rawKelurahanData.map(
   ({ otomotif, pendidikan, teknologi, ...item }) => ({
