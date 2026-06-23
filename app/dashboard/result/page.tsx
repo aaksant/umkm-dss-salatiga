@@ -12,6 +12,10 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useEffectEvent, useState } from "react";
 
+const MapView = dynamic(() => import("@/components/result/map-view"), {
+  ssr: false
+});
+
 function NoInputInfo() {
   return (
     <div className="grid min-h-screen place-items-center overflow-y-hidden">
@@ -59,9 +63,6 @@ export default function ResultPage() {
   if (!dssResult) return <NoInputInfo />;
 
   const topResult = dssResult.topsisRecommendation.detail.results[0];
-  const MapView = dynamic(() => import("@/components/result/map-view"), {
-    ssr: false
-  });
 
   return (
     <div className="p-4">
