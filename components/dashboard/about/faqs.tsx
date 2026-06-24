@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
 
 type FaqItem = {
   id: string;
@@ -35,7 +36,7 @@ const faqItems: FaqItem[] = [
     question:
       "Bagaimana soal keamanan data? Apakah data saya disimpan dalam server?",
     answer:
-      "Tidak. Seluruh pemrosesan data — termasuk K-Means, AHP, dan TOPSIS berjalan sepenuhnya di perangkat Anda (client-side). Tidak ada data profil usaha yang dikirim ke server manapun. Data yang Anda masukkan hanya disimpan sementara di browser Anda."
+      "Perhitungan K-Means, AHP, dan TOPSIS berjalan sepenuhnya di perangkat Anda (client-side) saat Anda menekan tombol rekomendasi. Namun, profil usaha dan hasil rekomendasi yang dihasilkan disimpan ke basis data sistem untuk keperluan pencatatan dan evaluasi penelitian. Data ini tidak dibagikan ke pihak ketiga di luar keperluan akademik tugas akhir ini."
   },
   {
     id: "q5",
@@ -47,7 +48,7 @@ const faqItems: FaqItem[] = [
 
 export default function Faqs() {
   return (
-    <Accordion type="multiple" className="space-y-2 border-none py-2">
+    <Accordion type="multiple" className="space-y-3 border-none py-2">
       {faqItems.map((faqItem) => (
         <FaqRow key={faqItem.id} {...faqItem} />
       ))}
@@ -57,11 +58,18 @@ export default function Faqs() {
 
 function FaqRow({ id, question, answer }: FaqItem) {
   return (
-    <AccordionItem value={id} className="border rounded-md px-2 shadow-none">
-      <AccordionTrigger className="text-sm cursor-pointer font-medium py-4 hover:no-underline">
+    <AccordionItem
+      value={id}
+      className={cn(
+        "rounded-xl border border-[#D6DAD0] px-3 shadow-sm transition-all duration-300",
+        "bg-white data-[state=open]:bg-white data-[state=closed]:bg-white",
+        "hover:border-[#28344A]/30 data-[state=open]:border-[#28344A]/30"
+      )}
+    >
+      <AccordionTrigger className="cursor-pointer py-5 text-left font-sans text-sm font-semibold text-[#28344A] hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#28344A]/40 [&>svg]:text-[#28344A]/50">
         {question}
       </AccordionTrigger>
-      <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
+      <AccordionContent className="max-w-3xl pb-6 font-sans text-sm leading-relaxed text-[#23262B]/80">
         {answer}
       </AccordionContent>
     </AccordionItem>

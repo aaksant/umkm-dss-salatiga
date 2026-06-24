@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 type PipelineStep = {
   id: string;
@@ -15,7 +16,7 @@ const pipelineSteps: PipelineStep[] = [
     subtitle: "K-Means Clustering. Dijalankan saat aplikasi dimuat",
     badgeContent: "Otomatis",
     description:
-      "23 kelurahan di Kota Salatiga dikelompokkan berdasarkan kemiripan profil pasarnya menggunakan algoritma K-Means. Pengelompokan ini memastikan bahwa TOPSIS hanya membandingkan kelurahan yang karakteristiknya serupa sehingga hasil ranking memiliki cakupan yang sam. Jumlah cluster dipilih berdasarkan Silhouette Score tertinggi."
+      "23 kelurahan di Kota Salatiga dikelompokkan berdasarkan kemiripan profil pasarnya menggunakan algoritma K-Means. Pengelompokan ini memastikan bahwa TOPSIS hanya membandingkan kelurahan yang karakteristiknya serupa sehingga hasil ranking memiliki cakupan yang sama. Jumlah cluster dipilih berdasarkan Silhouette Score tertinggi."
   },
   {
     id: "2",
@@ -39,11 +40,17 @@ const pipelineSteps: PipelineStep[] = [
 
 export default function PipelineSteps() {
   return (
-    <div>
-      {pipelineSteps.map((step) => (
-        <PipelineRow key={step.id} {...step} />
-      ))}
-    </div>
+    <Card className="rounded-xl border-[#28344A]/10 shadow-none">
+      <CardContent>
+        {pipelineSteps.map((step, i) => (
+          <PipelineRow
+            key={step.id}
+            {...step}
+            isLast={i === pipelineSteps.length - 1}
+          />
+        ))}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -52,28 +59,36 @@ function PipelineRow({
   title,
   subtitle,
   description,
-  badgeContent
-}: PipelineStep) {
+  badgeContent,
+  isLast
+}: PipelineStep & { isLast: boolean }) {
   return (
-    <div>
+    <div className="rounded-xl border-[#28344A]/10 shadow-none">
       <div className="flex gap-4">
-        {/* nomor + garis vertikal */}
         <div className="flex flex-col items-center">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-blue-400 bg-blue-50 text-sm font-bold text-primary">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[#28344A]/30 bg-[#28344A]/10 text-sm font-bold text-[#28344A]">
             {id}
           </div>
+          {!isLast && (
+            <div
+              className="mt-1 w-px flex-1 bg-[#28344A]/15"
+              aria-hidden="true"
+            />
+          )}
         </div>
 
-        {/* Konten */}
         <div className="pb-8">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            <span className="font-semibold">{title}</span>
-            <Badge variant="outline" className="text-xs">
+          <div className="mb-1 flex flex-wrap items-center gap-2">
+            <span className="font-semibold text-[#23262B]">{title}</span>
+            <Badge
+              variant="outline"
+              className="border-[#28344A]/15 bg-white text-xs text-[#23262B]/70"
+            >
               {badgeContent}
             </Badge>
           </div>
-          <p className="text-xs text-muted-foreground mb-2">{subtitle}</p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="mb-2 text-xs text-[#23262B]/70">{subtitle}</p>
+          <p className="text-sm leading-relaxed text-[#23262B]/70">
             {description}
           </p>
         </div>

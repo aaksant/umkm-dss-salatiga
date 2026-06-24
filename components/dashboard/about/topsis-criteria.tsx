@@ -83,7 +83,7 @@ function TopsisCriteriaRow({
             variant={type === "benefit" ? "outline" : "destructive"}
             className={type === "benefit" ? "bg-green-100 text-green-800" : ""}
           >
-            {type === "benefit" ? "↑ benefit" : "↓ cost"}
+            {type === "benefit" ? "↑ BENEFIT" : "↓ COST"}
           </Badge>
         </div>
         <p className="text-xs text-muted-foreground">{description}</p>
