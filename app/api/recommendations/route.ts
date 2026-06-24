@@ -66,21 +66,27 @@ export async function POST(req: NextRequest) {
       weights
     } = parsed.data;
 
-    await db.insert(recommendations).values({
-      namaUsaha,
-      skala,
-      sektor,
-      kecamatan,
-      deskripsiProduk: deskripsiProduk ?? null,
-      k,
-      silhouette,
-      targetCluster,
-      topKelurahan,
-      consistencyRatio,
-      weights
-    });
+    const [inserted] = await db
+      .insert(recommendations)
+      .values({
+        namaUsaha,
+        skala,
+        sektor,
+        kecamatan,
+        deskripsiProduk: deskripsiProduk ?? null,
+        k,
+        silhouette,
+        targetCluster,
+        topKelurahan,
+        consistencyRatio,
+        weights
+      })
+      .returning({
+        id: recommendations.id,
+        createdAt: recommendations.createdAt
+      });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, data: inserted });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ success: false }, { status: 500 });
