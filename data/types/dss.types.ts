@@ -4,6 +4,8 @@ import { ClusterResult } from "./kmeans.types";
 import { TopsisRecommendationByCluster } from "./topsis.types";
 
 export interface DSSResult {
+  id: string;
+  createdAt: string;
   profile: {
     namaUsaha: string;
     sektor: Sektor;
