@@ -30,21 +30,34 @@ export default function SidebarLinks() {
 
   return (
     <>
-      {links.map((link) => (
-        <Link
-          href={link.href}
-          key={link.href}
-          className={cn(
-            "flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-slate-100 hover:text-slate-600 md:flex-none md:justify-start md:p-2 md:px-3",
-            {
-              "bg-sky-100 text-blue-600": pathname === link.href
-            }
-          )}
-        >
-          <link.icon className="w-6" />
-          <p className="hidden md:block">{link.name}</p>
-        </Link>
-      ))}
+      {links.map((link) => {
+        const isActive = pathname === link.href;
+
+        return (
+          <Link
+            href={link.href}
+            key={link.href}
+            className={cn(
+              // Transisi halus dan padding yang lega
+              "relative flex h-[48px] grow items-center justify-center gap-3 rounded-lg p-3 text-sm font-medium transition-all duration-200 md:flex-none md:justify-start md:px-4",
+              {
+                "bg-transparent text-[#23262B]/65 hover:bg-[#28344A]/[0.06] hover:text-[#23262B]":
+                  !isActive,
+                "bg-[#28344A]/10 font-semibold text-[#28344A]": isActive
+              }
+            )}
+          >
+            {isActive && (
+              <div className="absolute left-0 top-1/2 hidden h-1/2 w-1 -translate-y-1/2 rounded-r-md bg-[#28344A] md:block" />
+            )}
+
+            <link.icon
+              className={cn("w-5", isActive ? "stroke-[2.5px]" : "stroke-2")}
+            />
+            <p className="hidden md:block">{link.name}</p>
+          </Link>
+        );
+      })}
     </>
   );
 }
