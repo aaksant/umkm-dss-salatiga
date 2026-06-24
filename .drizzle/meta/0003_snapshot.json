@@ -1,0 +1,148 @@
+{
+  "id": "ad6db56a-06cd-4dca-8e76-da69754b737f",
+  "prevId": "ac69a722-4a74-420c-ac60-412b2ba81181",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.recommendations": {
+      "name": "recommendations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "nama_usaha": {
+          "name": "nama_usaha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skala": {
+          "name": "skala",
+          "type": "skalaEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sektor": {
+          "name": "sektor",
+          "type": "sektorEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kecamatan": {
+          "name": "kecamatan",
+          "type": "kecamatanEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deskripsi_produk": {
+          "name": "deskripsi_produk",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "k": {
+          "name": "k",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "silhouette": {
+          "name": "silhouette",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "target_cluster": {
+          "name": "target_cluster",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "top_kelurahan": {
+          "name": "top_kelurahan",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "consistency_ratio": {
+          "name": "consistency_ratio",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ahp_weights": {
+          "name": "ahp_weights",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.kecamatanEnum": {
+      "name": "kecamatanEnum",
+      "schema": "public",
+      "values": [
+        "Argomulyo",
+        "Sidomukti",
+        "Sidorejo",
+        "Tingkir"
+      ]
+    },
+    "public.sektorEnum": {
+      "name": "sektorEnum",
+      "schema": "public",
+      "values": [
+        "kuliner",
+        "fashion",
+        "perdagangan",
+        "agrobisnis"
+      ]
+    },
+    "public.skalaEnum": {
+      "name": "skalaEnum",
+      "schema": "public",
+      "values": [
+        "mikro",
+        "kecil",
+        "menengah"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
