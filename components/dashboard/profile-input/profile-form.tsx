@@ -35,6 +35,9 @@ type FormInput = {
   deskripsiProduk: string;
 };
 
+const fieldClass =
+  "h-12 rounded-xl border border-[#28344A]/15 bg-white !text-base shadow-none focus-visible:border-[#28344A] focus-visible:ring-2 focus-visible:ring-[#28344A]/25";
+
 export default function ProfileForm() {
   const router = useRouter();
   const {
@@ -60,20 +63,11 @@ export default function ProfileForm() {
       COMPUTED_AHP_RESULT.weights
     );
 
-    const payload = {
-      profile: { ...data },
-      clusterResult,
-      topsisRecommendation,
-      ahpResult: COMPUTED_AHP_RESULT
-    };
-
-    localStorage.setItem("dss-result", JSON.stringify(payload));
-
     const response = await fetch("/api/recommendations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...payload.profile,
+        ...data,
         k: clusterResult.k,
         silhouette: clusterResult.silhouette,
         targetCluster: topsisRecommendation.targetCluster,
@@ -93,6 +87,19 @@ export default function ProfileForm() {
     if (!response.ok) {
       const errorMessage = await response.json();
       console.error("Gagal menyimpan rekomendasi:", errorMessage);
+    } else {
+      const { data: inserted } = await response.json();
+
+      const payload = {
+        profile: { ...data },
+        clusterResult,
+        topsisRecommendation,
+        ahpResult: COMPUTED_AHP_RESULT,
+        id: inserted?.id ?? null,
+        createdAt: inserted?.createdAt ?? null
+      };
+
+      localStorage.setItem("dss-result", JSON.stringify(payload));
     }
 
     router.push("/dashboard/result");
@@ -107,13 +114,19 @@ export default function ProfileForm() {
   return (
     <form
       id="businessForm"
-      className="space-y-6"
+      className="space-y-7 rounded-2xl border border-[#28344A]/10 bg-white p-6 shadow-[0_1px_3px_rgba(40,52,74,0.06)] sm:p-8"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="text-center">
-        <h2 className="text-lg font-semibold tracking-tight">Data Usaha</h2>
-        <p className="text-xs text-muted-foreground">
-          Isi formulir di bawah ini. Kolom bertanda * wajib diisi.
+      <div className="space-y-1 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C8862E]">
+          Data Usaha
+        </p>
+        <h2 className="font-display text-xl font-bold tracking-tight text-[#23262B]">
+          Ceritakan tentang usaha Anda
+        </h2>
+        <p className="text-sm text-[#23262B]/60">
+          Isi formulir berikut. Kolom bertanda{" "}
+          <span className="font-bold text-[#C8862E]">*</span> wajib diisi.
         </p>
       </div>
 
@@ -123,18 +136,19 @@ export default function ProfileForm() {
         rules={{ required: "Nama usaha wajib diisi" }}
         render={({ field }) => (
           <div className="space-y-2">
-            <Label>
+            <Label className="text-[#23262B]">
               Nama Usaha
-              <span className="font-extrabold text-red-400">*</span>
+              <span className="font-bold text-[#C8862E]">*</span>
             </Label>
             <Input
               type="text"
               disabled={isSubmitting}
-              className="rounded-md"
+              placeholder="contoh: Warung Bu Tini"
+              className={fieldClass}
               {...field}
             />
             {errors.namaUsaha && (
-              <p className="text-xs text-destructive">
+              <p className="text-xs font-medium text-[#B8453D]">
                 {errors.namaUsaha.message}
               </p>
             )}
@@ -147,19 +161,22 @@ export default function ProfileForm() {
         control={control}
         rules={{ required: "Sektor wajib dipilih" }}
         render={({ field }) => (
-          <div className="space-y-1">
-            <Label>
-              Sektor <span className="font-extrabold text-red-400">*</span>
+          <div className="space-y-2">
+            <Label className="text-[#23262B]">
+              Sektor
+              <span className="font-bold text-[#C8862E]">*</span>
             </Label>
             <Select
               onValueChange={field.onChange}
               value={field.value}
               disabled={isSubmitting}
             >
-              <SelectTrigger className="w-full cursor-pointer rounded-md">
+              <SelectTrigger
+                className={`w-full cursor-pointer ${fieldClass} [&>svg]:text-[#28344A]/60`}
+              >
                 <SelectValue placeholder="Pilih sektor usaha" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-xl border-[#28344A]/10">
                 <SelectGroup>
                   {sektorOptions.map(({ value, label }) => (
                     <SelectItem
@@ -174,7 +191,7 @@ export default function ProfileForm() {
               </SelectContent>
             </Select>
             {errors.sektor && (
-              <p className="text-xs text-destructive">
+              <p className="text-xs font-medium text-[#B8453D]">
                 {errors.sektor.message}
               </p>
             )}
@@ -187,14 +204,15 @@ export default function ProfileForm() {
         control={control}
         rules={{ required: "Skala usaha wajib dipilih" }}
         render={({ field }) => (
-          <div className="space-y-1">
-            <Label>
-              Skala <span className="font-extrabold text-red-400">*</span>
+          <div className="space-y-2">
+            <Label className="text-[#23262B]">
+              Skala
+              <span className="font-bold text-[#C8862E]">*</span>
             </Label>
             <RadioGroup
               value={field.value}
               onValueChange={field.onChange}
-              className="flex w-full"
+              className="grid grid-cols-3 gap-2"
             >
               {skalaUsahaOptions.map(({ value, label }) => (
                 <div key={label} className="flex items-center gap-3">
@@ -204,7 +222,9 @@ export default function ProfileForm() {
               ))}
             </RadioGroup>
             {errors.skala && (
-              <p className="text-xs text-destructive">{errors.skala.message}</p>
+              <p className="text-xs font-medium text-[#B8453D]">
+                {errors.skala.message}
+              </p>
             )}
           </div>
         )}
@@ -215,20 +235,22 @@ export default function ProfileForm() {
         control={control}
         rules={{ required: "Kecamatan wajib diisi" }}
         render={({ field }) => (
-          <div className="space-y-1">
-            <Label>
+          <div className="space-y-2">
+            <Label className="text-[#23262B]">
               Kecamatan Asal
-              <span className="font-extrabold text-red-400">*</span>
+              <span className="font-bold text-[#C8862E]">*</span>
             </Label>
             <Select
               onValueChange={field.onChange}
               value={field.value}
               disabled={isSubmitting}
             >
-              <SelectTrigger className="w-full cursor-pointer rounded-md">
+              <SelectTrigger
+                className={`w-full cursor-pointer ${fieldClass} [&>svg]:text-[#28344A]/60`}
+              >
                 <SelectValue placeholder="Pilih kecamatan" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-xl border-[#28344A]/10">
                 <SelectGroup>
                   {kecamatanOptions.map(({ value, label }) => (
                     <SelectItem
@@ -243,7 +265,7 @@ export default function ProfileForm() {
               </SelectContent>
             </Select>
             {errors.kecamatan && (
-              <p className="text-xs text-destructive">
+              <p className="text-xs font-medium text-[#B8453D]">
                 {errors.kecamatan.message}
               </p>
             )}
@@ -255,22 +277,26 @@ export default function ProfileForm() {
         name="deskripsiProduk"
         control={control}
         render={({ field }) => (
-          <div className="space-y-1">
-            <Label>Deskripsi Produk</Label>
-            <Textarea className="rounded-md" {...field} />
+          <div className="space-y-2">
+            <Label className="text-[#23262B]">Deskripsi Produk</Label>
+            <Textarea
+              placeholder="Apa yang Anda jual? (opsional)"
+              className="min-h-24 rounded-xl border border-[#28344A]/15 bg-white text-base shadow-none focus-visible:border-[#28344A] focus-visible:ring-2 focus-visible:ring-[#28344A]/25"
+              {...field}
+            />
           </div>
         )}
       />
 
       <Button
         type="submit"
-        className="w-full h-12 rounded-md cursor-pointer"
+        className="h-12 w-full cursor-pointer rounded-xl bg-[#28344A] text-base font-semibold text-white hover:bg-[#28344A]/90 focus-visible:ring-2 focus-visible:ring-[#28344A]/40 focus-visible:ring-offset-2"
         disabled={isSubmitting}
       >
         {isSubmitting ? (
           <>
             Menganalisis...
-            <LoaderCircle className="h-4 w-4 animate-spin" />
+            <LoaderCircle className="h-4 w-4 motion-safe:animate-spin" />
           </>
         ) : (
           <>
