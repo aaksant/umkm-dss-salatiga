@@ -5,6 +5,7 @@ import {
   pgTable,
   real,
   text,
+  timestamp,
   uuid,
   varchar
 } from "drizzle-orm/pg-core";
@@ -25,6 +26,7 @@ export const kecamatanEnum = pgEnum("kecamatanEnum", [
 
 export const recommendations = pgTable("recommendations", {
   id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
   namaUsaha: text("nama_usaha").notNull(),
   skala: skalaEnum("skala").notNull(),
   sektor: sektorEnum("sektor").notNull(),
