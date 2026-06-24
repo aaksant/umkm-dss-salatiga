@@ -37,15 +37,23 @@ export default function StatisticPage() {
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="font-bold tracking-tight text-3xl mb-6">Statistik</h1>
-      <div className="space-y-6">
-        <div className="space-y-4">
+    <div className="mx-auto max-w-4xl p-4 md:p-6">
+      <h1 className="mb-2 font-display text-3xl font-bold tracking-tight text-[#23262B]">
+        Statistik Analisis
+      </h1>
+      <p className="mb-8 text-[#23262B]/70">
+        Parameter dan hasil segmentasi wilayah menggunakan algoritma K-Means.
+      </p>
+
+      <div className="space-y-8">
+        <div className="space-y-4 rounded-xl border border-[#28344A]/10 bg-white p-5 shadow-sm">
           <div>
-            <h3 className="font-semibold text-xl">K-Means</h3>
-            <p className="text-sm text-muted-foreground">
-              Visualisasi hasil clustering K-Means pada 23 kelurahan di Kota
-              Salatiga. Geser slider untuk melihat perbedaan.
+            <h3 className="font-display text-xl font-semibold text-[#23262B]">
+              Parameter K-Means
+            </h3>
+            <p className="mt-1 text-sm text-[#23262B]/70">
+              Visualisasi hasil clustering pada 23 kelurahan di Kota Salatiga.
+              Geser slider untuk melihat perbedaan jumlah segmen.
             </p>
           </div>
           <KMeansClusterSlider
@@ -56,14 +64,22 @@ export default function StatisticPage() {
         </div>
 
         {isKPending && (
-          <div className="flex items-center justify-center">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          <div className="flex items-center justify-center py-4">
+            <Loader2 className="h-8 w-8 motion-safe:animate-spin text-[#28344A]" />
           </div>
         )}
 
-        {/* Presentasi */}
-        <ElbowChart elbowData={elbowData} />
-        <ClusterResultTable tableData={tableData} />
+        {/* Presentasi Data */}
+        <div
+          className={
+            isKPending ? "opacity-50 transition-opacity" : "transition-opacity"
+          }
+        >
+          <ElbowChart elbowData={elbowData} />
+          <div className="mt-8">
+            <ClusterResultTable tableData={tableData} />
+          </div>
+        </div>
       </div>
     </div>
   );
