@@ -24,91 +24,90 @@ export default function TopResultDropdown({
 }: TopResultDropdownProps) {
   return (
     <Collapsible open={isTopResultOpen} onOpenChange={onOpenChange}>
-      <Card className="overflow-hidden border-2 rounded-lg relative py-0">
+      <Card className="relative overflow-hidden rounded-xl border border-[#28344A]/15 bg-white py-6 shadow-sm transition-colors motion-reduce:transition-none hover:border-[#28344A]/30">
         <CollapsibleTrigger asChild>
-          <button className="w-full text-left">
-            <CardHeader className="flex flex-row items-center justify-between px-4 py-5 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
-                  <h2 className="text-lg font-semibold text-blue-600">#1</h2>
+          <button className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#28344A]/40 focus-visible:ring-offset-2">
+            <CardHeader className="flex cursor-pointer flex-col justify-between gap-4 px-5 pb-4 pt-6 md:flex-row md:items-center">
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#C8862E]/15">
+                  <h2 className="font-mono text-2xl font-bold text-[#C8862E]">
+                    #1
+                  </h2>
                 </div>
-                <div className="space-y-1">
-                  <p className="uppercase text-sm text-blue-600 font-semibold">
+
+                <div className="space-y-0.5">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#C8862E]">
                     Rekomendasi Teratas
                   </p>
-                  <h3 className="text-lg font-bold tracking-tight uppercase">
+                  <h3 className="font-display text-2xl font-bold tracking-tight text-[#23262B]">
                     Kelurahan {topResult.kelurahan}
                   </h3>
-                  <p className="text-muted-foreground font-semibold uppercase">
+                  <p className="font-sans text-sm font-medium text-[#23262B]/60">
                     Kecamatan {topResult.kecamatan}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                  <p className="text-xs text-muted-foreground">Skor TOPSIS</p>
-                  <h2 className="text-lg font-bold tracking-tight">
-                    {topResult.score.toFixed(3)}
+
+              <div className="flex items-center justify-between md:justify-end md:gap-4">
+                <div className="text-left md:text-right">
+                  <p className="mb-0.5 text-[11px] font-bold uppercase tracking-widest text-[#23262B]/50">
+                    Skor TOPSIS
+                  </p>
+                  <h2 className="font-mono text-3xl font-bold text-[#3F7D55]">
+                    {topResult.score.toFixed(4)}
                   </h2>
                 </div>
               </div>
             </CardHeader>
           </button>
         </CollapsibleTrigger>
-        <div className="absolute left-1/2 bottom-4 -translate-x-1/2">
-          <ChevronDown
-            className={cn(
-              "h-4 w-4 text-muted-foreground transition-transform duration-200",
-              isTopResultOpen && "rotate-180"
-            )}
-          />
-        </div>
+
         <CollapsibleContent>
-          <CardContent className="pb-10 px-6">
-            <div className="border-t pt-6">
-              <h4 className="text-xs font-semibold mb-4 text-muted-foreground uppercase tracking-wider text-center md:text-left">
-                Detail Rekomendasi
+          <CardContent className="px-5 pb-2 pt-0">
+            <div className="rounded-xl border border-[#28344A]/10 bg-[#EEF0E8]/50 p-5 pt-6">
+              <h4 className="mb-5 text-center text-[11px] font-bold uppercase tracking-widest text-[#23262B]/50 md:text-left">
+                Karakteristik Wilayah
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex flex-col items-center p-4 rounded-xl border bg-slate-50/50 transition-colors hover:bg-slate-50 shadow-sm">
-                  <div className="p-2.5 bg-blue-100 text-blue-600 rounded-full mb-3">
-                    <Users className="w-5 h-5" />
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className="flex flex-col items-center rounded-xl border border-[#28344A]/10 bg-white p-4 shadow-sm transition-all motion-reduce:transition-none hover:shadow-md">
+                  <div className="mb-3 rounded-full bg-[#C8862E]/10 p-2.5 text-[#C8862E]">
+                    <Users className="h-5 w-5" />
                   </div>
-                  <div className="text-center space-y-1">
-                    <p className="text-xl font-black text-slate-800 tracking-tight">
-                      {topResult.C1}
+                  <div className="space-y-1 text-center">
+                    <p className="font-mono text-xl font-bold text-[#23262B]">
+                      {new Intl.NumberFormat("id-ID").format(topResult.C1)}
                     </p>
-                    <p className="text-xs text-muted-foreground font-medium">
-                      Populasi Kelurahan
+                    <p className="font-sans text-xs font-medium text-[#23262B]/70">
+                      Populasi Penduduk
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col items-center p-4 rounded-xl border bg-slate-50/50 transition-colors hover:bg-slate-50 shadow-sm">
-                  <div className="p-2.5 bg-emerald-100 text-emerald-600 rounded-full mb-3">
-                    <Store className="w-5 h-5" />
+
+                <div className="flex flex-col items-center rounded-xl border border-[#C8862E]/20 bg-white p-4 shadow-sm transition-all motion-reduce:transition-none hover:shadow-md">
+                  <div className="mb-3 rounded-full bg-[#C8862E]/10 p-2.5 text-[#C8862E]">
+                    <Store className="h-5 w-5" />
                   </div>
-                  <div className="text-center space-y-1">
-                    <p className="text-xl font-black text-slate-800 tracking-tight">
+                  <div className="space-y-1 text-center">
+                    <p className="font-mono text-xl font-bold text-[#23262B]">
                       {((topResult.C2 / topResult.total) * 100).toFixed(2)}%
                     </p>
-                    <p className="text-xs text-muted-foreground font-medium">
-                      UMKM Sektor{" "}
-                      <span className="uppercase text-emerald-600 font-semibold">
-                        {dssResult.profile.sektor}
-                      </span>
+                    <p className="font-sans text-xs font-medium text-[#23262B]/70">
+                      UMKM Sektor {dssResult.profile.sektor}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col items-center p-4 rounded-xl border bg-slate-50/50 transition-colors hover:bg-slate-50 shadow-sm">
-                  <div className="p-2.5 bg-amber-100 text-amber-600 rounded-full mb-3">
-                    <FileUser className="w-5 h-5" />
+
+                <div className="flex flex-col items-center rounded-xl border border-[#28344A]/10 bg-white p-4 shadow-sm transition-all motion-reduce:transition-none hover:shadow-md">
+                  <div className="mb-3 rounded-full bg-[#C8862E]/10 p-2.5 text-[#C8862E]">
+                    <FileUser className="h-5 w-5" />
                   </div>
-                  <div className="text-center space-y-1">
-                    <p className="text-xl font-black text-slate-800 tracking-tight">
-                      {topResult.C3}
+                  <div className="space-y-1 text-center">
+                    <p className="font-mono text-xl font-bold text-[#23262B]">
+                      {new Intl.NumberFormat("id-ID").format(topResult.C3)}
                     </p>
-                    <p className="text-xs text-muted-foreground font-medium">
-                      Total UMKM Terdaftar
+                    <p className="font-sans text-xs font-medium text-[#23262B]/70">
+                      Total UMKM Ber-NIB
                     </p>
                   </div>
                 </div>
@@ -116,6 +115,16 @@ export default function TopResultDropdown({
             </div>
           </CardContent>
         </CollapsibleContent>
+        <CollapsibleTrigger asChild>
+          <button className="absolute bottom-0 left-0 flex h-10 w-full items-center justify-center">
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 text-[#28344A]/40 transition-transform duration-300 motion-reduce:transition-none",
+                isTopResultOpen && "rotate-180"
+              )}
+            />
+          </button>
+        </CollapsibleTrigger>
       </Card>
     </Collapsible>
   );

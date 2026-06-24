@@ -2,9 +2,9 @@
 
 import AhpDetailsDropdown from "@/components/result/ahp-detail-dropdown";
 import RecommendationTable from "@/components/result/recommendation-table";
+import ResultHeader from "@/components/result/result-header";
 import TopResultDropdown from "@/components/result/top-result-dropdown";
 import TopsisDetailDropdown from "@/components/result/topsis-detail-dropdown";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DSSResult } from "@/data/types/dss.types";
 import { ArrowUpRight, TriangleAlert } from "lucide-react";
@@ -18,22 +18,27 @@ const MapView = dynamic(() => import("@/components/result/map-view"), {
 
 function NoInputInfo() {
   return (
-    <div className="grid min-h-screen place-items-center overflow-y-hidden">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-slate-100">
-          <TriangleAlert className="text-slate-600" />
+    <div className="grid min-h-[80vh] place-items-center overflow-y-hidden px-4">
+      <div className="flex max-w-sm flex-col items-center gap-4 text-center">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#B8453D]/10">
+          <TriangleAlert className="h-6 w-6 text-[#B8453D]" />
         </div>
-        <div className="text-center space-y-1">
-          <h1 className="font-semibold text-xl tracking-tight">
+        <div className="space-y-1">
+          <h1 className="font-display text-xl font-bold tracking-tight text-[#23262B]">
             Harap isi profil bisnis Anda
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="font-sans text-sm text-[#23262B]/70">
             Sistem membutuhkan profil usaha Anda untuk membuat rekomendasi
+            distribusi.
           </p>
         </div>
-        <Button asChild size="sm" variant="ghost">
+        <Button
+          asChild
+          size="sm"
+          className="mt-2 bg-[#28344A] font-sans font-medium text-[#EEF0E8] hover:bg-[#28344A]/90"
+        >
           <Link href="/dashboard/profile-input">
-            Input profil <ArrowUpRight />
+            Input profil <ArrowUpRight className="ml-1 h-4 w-4" />
           </Link>
         </Button>
       </div>
@@ -54,55 +59,35 @@ export default function ResultPage() {
     }
   });
 
-  // Ambil data localStorage
   useEffect(() => {
     loadDssResult();
   }, []);
 
-  // Kalau dari localStorage null tampilkan fallback
   if (!dssResult) return <NoInputInfo />;
 
   const topResult = dssResult.topsisRecommendation.detail.results[0];
 
   return (
-    <div className="p-4">
-      <div className="space-y-1 mb-6">
-        <h1 className="font-bold tracking-tight text-3xl">Hasil Rekomendasi</h1>
-        {/* Breadcrumbs */}
-        <div className="flex items-center gap-x-2">
-          <Badge variant="outline" className="capitalize p-3">
-            {dssResult.profile.sektor}
-          </Badge>
-          <Badge variant="outline" className="capitalize p-3">
-            {dssResult.profile.skala}
-          </Badge>
-          <Badge variant="outline" className="capitalize p-3">
-            {dssResult.profile.kecamatan}
-          </Badge>
-          <Badge variant="outline" className="capitalize p-3">
-            {dssResult.profile.namaUsaha}
-          </Badge>
-        </div>
-      </div>
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* Dropdown ranking pertama */}
+    <div className="mx-auto max-w-4xl p-4 font-sans md:p-6">
+      <ResultHeader dssResult={dssResult} />
+      <div className="space-y-6">
         <TopResultDropdown
           dssResult={dssResult}
           topResult={topResult}
           isTopResultOpen={isTopResultOpen}
           onOpenChange={() => setIsTopResultOpen(!isTopResultOpen)}
         />
-        {/* Leaflet map */}
+
         <MapView dssResult={dssResult} />
-        {/* Full ranking TOPSIS */}
+
         <RecommendationTable dssResult={dssResult} />
-        {/* Detail kriteria AHP */}
+
         <AhpDetailsDropdown
           dssResult={dssResult}
           isAhpDetailOpen={isAhpDetailOpen}
           onOpenChange={() => setIsAhpDetailOpen(!isAhpDetailOpen)}
         />
-        {/* Detail perhitungan TOPSIS */}
+
         <TopsisDetailDropdown
           dssResult={dssResult}
           isTopsisDetailOpen={isTopsisDetailOpen}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
 import { Layer, PathOptions } from "leaflet";
 import L from "leaflet";
@@ -61,12 +61,12 @@ const scoreDistribution = [
   { max: 1, color: mapColors.score.lowest, label: "20% Terendah" }
 ];
 
-export default function MapView({ dssResult, height = 480 }: MapViewProps) {
+function MapView({ dssResult, height = 480 }: MapViewProps) {
   const [geojson, setGeojson] = useState<FeatureCollection | null>(null);
 
   const results = dssResult.topsisRecommendation.detail.results;
-  const resultMap = createResultMap(results);
-  const scoreColorMap = createScoreColorMap(results);
+  const resultMap = useMemo(() => createResultMap(results), [results]);
+  const scoreColorMap = useMemo(() => createScoreColorMap(results), [results]);
 
   // Load GeoJSON
   useEffect(() => {
@@ -165,6 +165,8 @@ export default function MapView({ dssResult, height = 480 }: MapViewProps) {
     </div>
   );
 }
+
+export default memo(MapView);
 
 function Legend() {
   return (
