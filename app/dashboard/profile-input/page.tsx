@@ -5,19 +5,17 @@ import { MapPin } from "lucide-react";
 
 export default function ProfileInputPage() {
   return (
-    <div className="min-h-screen grid place-items-center bg-muted/40 px-4">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 mx-auto flex items-center justify-center rounded-xl bg-slate-100">
-            <MapPin className="text-slate-600" />
+    <div className="flex min-h-screen justify-center px-4 py-12 sm:py-16">
+      <div className="w-full max-w-xl space-y-6">
+        <div className="space-y-3 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#28344A]/10">
+            <MapPin className="text-[#28344A]" />
           </div>
-          <h1 className="font-semibold text-xl tracking-tight">
+          <h1 className="font-display text-xl font-bold tracking-tight text-[#23262B]">
             Lengkapi profil usaha Anda
           </h1>
         </div>
-        <div className="rounded-2xl border p-6 shadow-none">
-          <ProfileForm />
-        </div>
+        <ProfileForm />
       </div>
     </div>
   );
