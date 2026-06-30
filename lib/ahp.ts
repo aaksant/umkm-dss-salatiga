@@ -1,6 +1,6 @@
-import { AHPCriteria, AHPResult } from "@/playgrounds/ahp.playground";
 import { mean } from "simple-statistics";
 import { AHP_CR_THRESHOLD } from "./constants";
+import { AHPCriteria, AHPResult } from "@/data/types/ahp.types";
 
 /**
  * Pairwise comparison matrix
