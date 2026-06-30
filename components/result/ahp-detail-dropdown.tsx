@@ -15,8 +15,8 @@ import {
   TableRow
 } from "../ui/table";
 import { DSSResult } from "@/data/types/dss.types";
-import { ahpCriteria } from "@/playgrounds/ahp.playground";
 import { cn } from "@/lib/utils";
+import { ahpCriteria } from "@/lib/ahp";
 
 type AhpDetailDropdownProps = {
   dssResult: DSSResult;

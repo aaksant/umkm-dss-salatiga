@@ -15,9 +15,9 @@ import {
   TableRow
 } from "../ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { ahpCriteria } from "@/playgrounds/ahp.playground";
 import { Badge } from "../ui/badge";
 import { DSSResult } from "@/data/types/dss.types";
+import { ahpCriteria } from "@/lib/ahp";
 
 type TopsisDetailsDropdownProps = {
   dssResult: DSSResult;
